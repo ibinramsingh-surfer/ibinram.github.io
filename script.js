@@ -3,22 +3,23 @@ const yesBtn = document.getElementById("yesBtn");
 const taunt = document.getElementById("taunt");
 const main = document.getElementById("main");
 const celebrate = document.getElementById("celebrate");
-const music = document.getElementById("bgMusic");
 
+const roseStage = document.getElementById("roseStage");
+const achievementStage = document.getElementById("achievementStage");
+
+/* English Sarcastic Lines ONLY */
 const taunts = [
-  "Dei option ah paathiya? NO illa 😏",
-  "Ayyo effort waste panriye 😂",
-  "Seri seri, YES click pannalaam 😜",
-  "Indha button ku freedom illa 😌",
-  "Vidunga madam, destiny already decide panniduchu 💘",
-  "No kudutha phone hang aagum 🤭",
-  "YES dhaan correct choice 😎"
+  "Nice try 😏",
+  "That button doesn’t work 😌",
+  "You know YES is the right choice 😉",
+  "Still not happening 😂",
+  "Destiny says YES 💛",
+  "Wrong option detected 😜",
+  "System override: YES only 😎",
+  "Stop teasing and click YES 😏"
 ];
 
-// Move NO button
-noBtn.addEventListener("mouseover", moveNo);
-noBtn.addEventListener("click", moveNo);
-
+/* NO button movement */
 function moveNo() {
   const x = Math.random() * (window.innerWidth - 150);
   const y = Math.random() * (window.innerHeight - 150);
@@ -29,21 +30,34 @@ function moveNo() {
   taunt.innerText = taunts[Math.floor(Math.random() * taunts.length)];
 }
 
-// YES button logic
+noBtn.addEventListener("mouseover", moveNo);
+noBtn.addEventListener("click", moveNo);
+
+/* YES button logic */
 yesBtn.addEventListener("click", () => {
-  yesBtn.innerText = "Loading love... 💕";
+  yesBtn.innerText = "Processing happiness... 💛";
 
   setTimeout(() => {
     main.classList.add("hidden");
     celebrate.classList.remove("hidden");
-    music.play();
-    startConfetti();
+
+    roseStage.classList.remove("hidden");
+    achievementStage.classList.add("hidden");
+
+    // Show achievement after rose
+    setTimeout(() => {
+      roseStage.classList.add("hidden");
+      achievementStage.classList.remove("hidden");
+      startConfetti();
+    }, 2500);
+
   }, 1200);
 });
 
 /* CONFETTI */
 const canvas = document.getElementById("confetti");
 const ctx = canvas.getContext("2d");
+
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
