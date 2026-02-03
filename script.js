@@ -1,39 +1,57 @@
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
-const taunt = document.getElementById("taunt");
+const tauntBtn = document.getElementById("tauntBtn");
 const main = document.getElementById("main");
 const celebrate = document.getElementById("celebrate");
 
 const roseStage = document.getElementById("roseStage");
 const achievementStage = document.getElementById("achievementStage");
 
-/* English Sarcastic Lines ONLY */
 const taunts = [
   "Nice try 😏",
-  "That button doesn’t work 😌",
-  "You know YES is the right choice 😉",
-  "Still not happening 😂",
-  "Destiny says YES 💛",
-  "Wrong option detected 😜",
-  "System override: YES only 😎",
-  "Stop teasing and click YES 😏"
+  "Still the wrong choice 😌",
+  "YES is literally chasing you 😉",
+  "You can’t escape destiny 😂",
+  "Resistance is pointless 💛",
+  "System override in progress 😎",
+  "Just accept it already 😏"
 ];
 
-/* NO button movement */
-function moveNo() {
-  const x = Math.random() * (window.innerWidth - 150);
-  const y = Math.random() * (window.innerHeight - 150);
-
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
-
-  taunt.innerText = taunts[Math.floor(Math.random() * taunts.length)];
+function randomPosition(el) {
+  const x = Math.random() * (window.innerWidth - 200);
+  const y = Math.random() * (window.innerHeight - 200);
+  el.style.left = x + "px";
+  el.style.top = y + "px";
 }
 
-noBtn.addEventListener("mouseover", moveNo);
-noBtn.addEventListener("click", moveNo);
+function showTaunt() {
+  tauntBtn.innerText = taunts[Math.floor(Math.random() * taunts.length)];
+  tauntBtn.classList.remove("hidden");
+  randomPosition(tauntBtn);
+}
 
-/* YES button logic */
+/* NO button */
+noBtn.addEventListener("click", () => {
+  randomPosition(noBtn);
+  showTaunt();
+});
+
+/* Taunt button loop */
+tauntBtn.addEventListener("click", () => {
+  showTaunt();
+});
+
+/* YES button chases cursor */
+document.addEventListener("mousemove", (e) => {
+  const rect = yesBtn.getBoundingClientRect();
+  const dx = e.clientX - rect.left;
+  const dy = e.clientY - rect.top;
+
+  yesBtn.style.left = rect.left + dx * 0.02 + "px";
+  yesBtn.style.top = rect.top + dy * 0.02 + "px";
+});
+
+/* YES button click */
 yesBtn.addEventListener("click", () => {
   yesBtn.innerText = "Processing happiness... 💛";
 
@@ -44,26 +62,24 @@ yesBtn.addEventListener("click", () => {
     roseStage.classList.remove("hidden");
     achievementStage.classList.add("hidden");
 
-    // Show achievement after rose
     setTimeout(() => {
       roseStage.classList.add("hidden");
       achievementStage.classList.remove("hidden");
       startConfetti();
     }, 2500);
-
   }, 1200);
 });
 
 /* CONFETTI */
 const canvas = document.getElementById("confetti");
 const ctx = canvas.getContext("2d");
-
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 let confetti = [];
 
 function startConfetti() {
+  confetti = [];
   for (let i = 0; i < 300; i++) {
     confetti.push({
       x: Math.random() * canvas.width,
