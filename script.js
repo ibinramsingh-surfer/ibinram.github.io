@@ -1,0 +1,75 @@
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const taunt = document.getElementById("taunt");
+const main = document.getElementById("main");
+const celebrate = document.getElementById("celebrate");
+const music = document.getElementById("bgMusic");
+
+const taunts = [
+  "Dei option ah paathiya? NO illa 😏",
+  "Ayyo effort waste panriye 😂",
+  "Seri seri, YES click pannalaam 😜",
+  "Indha button ku freedom illa 😌",
+  "Vidunga madam, destiny already decide panniduchu 💘",
+  "No kudutha phone hang aagum 🤭",
+  "YES dhaan correct choice 😎"
+];
+
+// Move NO button
+noBtn.addEventListener("mouseover", moveNo);
+noBtn.addEventListener("click", moveNo);
+
+function moveNo() {
+  const x = Math.random() * (window.innerWidth - 150);
+  const y = Math.random() * (window.innerHeight - 150);
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+
+  taunt.innerText = taunts[Math.floor(Math.random() * taunts.length)];
+}
+
+// YES button logic
+yesBtn.addEventListener("click", () => {
+  yesBtn.innerText = "Loading love... 💕";
+
+  setTimeout(() => {
+    main.classList.add("hidden");
+    celebrate.classList.remove("hidden");
+    music.play();
+    startConfetti();
+  }, 1200);
+});
+
+/* CONFETTI */
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let confetti = [];
+
+function startConfetti() {
+  for (let i = 0; i < 300; i++) {
+    confetti.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 6 + 2,
+      d: Math.random() * 5 + 1
+    });
+  }
+  animateConfetti();
+}
+
+function animateConfetti() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "rgba(255,215,0,0.9)";
+  confetti.forEach(c => {
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+    ctx.fill();
+    c.y += c.d;
+    if (c.y > canvas.height) c.y = 0;
+  });
+  requestAnimationFrame(animateConfetti);
+}
